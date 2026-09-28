@@ -1,15 +1,231 @@
 {% extends 'objects_10/base.html' %}
-{% block title %}Detector{% endblock %}
+
+{% block title %}AI Image Classifier{% endblock %}
+
 {% block content %}
-<h2>Upload link of a Picture to predict it!</h2>
-<form method='post' action="{% url 'detector' %}">
-    {% csrf_token %}
-    <input type="url" name="img_url" placeholder="Paste Image url" required>
-    <input type="submit" value="Analyze">
-</form>
-{% if result %}
-    <h1>{{ result }}</h1>
-{% else %}
-    <h1></h1>
-{% endif %}
+
+<section class="classifier-page">
+
+    <!-- Hero -->
+    <div class="classifier-hero">
+
+        <div class="hero-badge">
+            <span class="hero-badge-dot"></span>
+            PYTORCH IMAGE CLASSIFICATION
+        </div>
+
+        <h1>
+            Understand an image
+            <span class="gradient-text">in seconds.</span>
+        </h1>
+
+        <p class="hero-description">
+            Paste the URL of an image and let the neural network
+            classify it across the CIFAR-10 object categories.
+        </p>
+
+    </div>
+
+
+    <!-- Inference Console -->
+    <div class="inference-console ai-panel">
+
+        <div class="console-header">
+
+            <div class="console-title">
+                <span class="console-indicator"></span>
+
+                <div>
+                    <span>INFERENCE CONSOLE</span>
+                    <small>Image Classification Pipeline</small>
+                </div>
+            </div>
+
+            <span class="console-ready">
+                READY
+            </span>
+
+        </div>
+
+
+        <div class="console-body">
+
+            <form method="post"
+                  action="{% url 'detector' %}"
+                  class="prediction-form">
+
+                {% csrf_token %}
+
+                <label for="image-url">
+                    IMAGE SOURCE
+                </label>
+
+                <div class="url-input-wrapper">
+
+                    <div class="url-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                        </svg>
+                    </div>
+
+                    <input
+                        id="image-url"
+                        type="url"
+                        name="img_url"
+                        placeholder="https://example.com/image.jpg"
+                        value="{{ request.POST.img_url }}"
+                        required
+                    >
+
+                </div>
+
+                <p class="input-hint">
+                    Paste a direct, publicly accessible image URL.
+                </p>
+
+                <button type="submit" class="analyze-button">
+
+                    <span>Analyze Image</span>
+
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M5 12h14"></path>
+                        <path d="m14 7 5 5-5 5"></path>
+                    </svg>
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    {% if result %}
+
+    <!-- Prediction -->
+    <section class="prediction-section">
+
+        <div class="section-heading">
+            <span class="ai-label">INFERENCE COMPLETE</span>
+            <h2>Analysis Result</h2>
+        </div>
+
+
+        <div class="prediction-result ai-panel">
+
+            <div class="result-image-area">
+
+                <div class="result-image-header">
+                    <span>INPUT IMAGE</span>
+                    <span>01</span>
+                </div>
+
+                <div class="result-image-container">
+
+                    <img
+                        src="{{ request.POST.img_url }}"
+                        alt="Image submitted for classification"
+                    >
+
+                    <div class="scan-line"></div>
+
+                </div>
+
+            </div>
+
+
+            <div class="result-content">
+
+                <div class="result-status">
+                    <span class="result-status-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M5 12.5l4.2 4.2L19 7"></path>
+                        </svg>
+                    </span>
+
+                    ANALYSIS COMPLETE
+                </div>
+
+
+                <p class="prediction-label">
+                    PREDICTED CLASS
+                </p>
+
+                <h2 class="prediction-value">
+                    {{ result }}
+                </h2>
+
+
+                <div class="prediction-meta">
+
+                    <div>
+                        <span>MODEL</span>
+                        <strong>PyTorch CNN</strong>
+                    </div>
+
+                    <div>
+                        <span>DATASET</span>
+                        <strong>CIFAR-10</strong>
+                    </div>
+
+                    <div>
+                        <span>CLASSES</span>
+                        <strong>10</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    {% endif %}
+
+
+    <!-- Model Information -->
+    <div class="model-strip">
+
+        <div class="model-stat">
+            <span class="stat-number">10</span>
+
+            <div>
+                <strong>Object Classes</strong>
+                <p>CIFAR-10 categories</p>
+            </div>
+        </div>
+
+
+        <div class="strip-divider"></div>
+
+
+        <div class="model-stat">
+            <span class="stat-symbol">◈</span>
+
+            <div>
+                <strong>PyTorch</strong>
+                <p>Neural inference</p>
+            </div>
+        </div>
+
+
+        <div class="strip-divider"></div>
+
+
+        <div class="model-stat">
+            <span class="stat-symbol">⌁</span>
+
+            <div>
+                <strong>URL Input</strong>
+                <p>Remote image analysis</p>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
 {% endblock %}
