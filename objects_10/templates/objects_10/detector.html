@@ -1,0 +1,15 @@
+{% extends 'objects_10/base.html' %}
+{% block title %}Detector{% endblock %}
+{% block content %}
+<h2>Upload link of a Picture to predict it!</h2>
+<form method='post' action="{% url 'detector' %}">
+    {% csrf_token %}
+    <input type="url" name="img_url" placeholder="Paste Image url" required>
+    <input type="submit" value="Analyze">
+</form>
+{% if result %}
+    <h1>{{ result }}</h1>
+{% else %}
+    <h1></h1>
+{% endif %}
+{% endblock %}

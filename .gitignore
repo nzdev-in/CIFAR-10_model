@@ -1,0 +1,4 @@
+cifar/
+__pycache__/
+dbsqlite3
+.env
